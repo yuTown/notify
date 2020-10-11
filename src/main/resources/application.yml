@@ -1,0 +1,11 @@
+work-we-chat:
+  robot-key: 6e80955d-be25-473e-b71f-08c1e1f811dd
+  enabled-send: false
+  notify-user:
+    mobile:
+      - 15365168979
+      - 13312345667
+    user-id:
+      - dongjingxi
+      - bairenjie
+
