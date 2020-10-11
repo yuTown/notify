@@ -24,7 +24,6 @@ import java.util.Objects;
  * @date 2020/7/16 1:20 下午
  */
 @Slf4j
-@Component
 public class NotifyManager {
 
     @Autowired
