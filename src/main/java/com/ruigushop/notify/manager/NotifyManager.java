@@ -9,24 +9,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * 群机器人 发消息
  *
- * @author chusen
- * @date 2020/7/16 1:20 下午
+ * @author dongjingxi
+ * @date 2020/10/11 13:20 下午
  */
 @Slf4j
 public class NotifyManager {
 
-    @Autowired
+    @Resource
     private Environment environment;
 
     @Resource
@@ -37,6 +34,8 @@ public class NotifyManager {
 
 
     private static final String SEND_MESSAGE_URL = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=";
+
+    private static final int MAX_LENGTH = 2048;
 
     /**
      * 发送告警信息
@@ -58,7 +57,7 @@ public class NotifyManager {
      * 发送消息企业微信消息.
      */
     private void sendMessage(String message) {
-        if (message.length() > 2048) {
+        if (message.length() > MAX_LENGTH) {
             log.error(String.format("超过企业微信发送消息最大长度,当前信息%s", message));
             message = "超过企业微信发送消息最大长度,请去日志中查询详细信息";
         }
@@ -66,8 +65,8 @@ public class NotifyManager {
             String url = SEND_MESSAGE_URL + notifyProperties.getRobotKey();
 
             SendRobotMessageReq sendRobotMessageReq = SendRobotMessageReq.getTextMessageNoticeResearch(message);
-            sendRobotMessageReq.getText().setMentioned_mobile_list(notifyProperties.getUser().getMobile());
-            sendRobotMessageReq.getText().setMentioned_list(notifyProperties.getUser().getUserId());
+            sendRobotMessageReq.getText().setMentioned_mobile_list(emptyListIfNull(notifyProperties.getUser().getMobile()));
+            sendRobotMessageReq.getText().setMentioned_list(emptyListIfNull(notifyProperties.getUser().getUserId()));
 
             ResponseEntity<Object> responseEntity = restTemplate.postForEntity(url, sendRobotMessageReq, Object.class);
 
@@ -85,6 +84,14 @@ public class NotifyManager {
             log.error("notification has error! message: body {} error message {} ", message, e.getMessage());
             log.error("error exception", e);
         }
+    }
+
+
+    public List<String> emptyListIfNull(List<String> list) {
+        if (list == null || list.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return list;
     }
 
 }
