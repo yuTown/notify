@@ -1,9 +1,9 @@
 package com.ruigushop.notify.config;
 
-import feign.RequestInterceptor;
-import feign.RequestTemplate;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
 
@@ -11,21 +11,15 @@ import javax.annotation.Resource;
  * @author Wangchong
  * @date 2020/7/1 11:03
  */
+@Configuration
 public class WorkWeChatRobotConfig {
 
     @Resource
-    private NotifyProperties notifyProperties;
+    private RestTemplateBuilder builder;
 
     @Bean
-    public WorkWeChatRobotRequestInterceptor requestInterceptor() {
-        return new WorkWeChatRobotRequestInterceptor();
+    public RestTemplate restTemplate() {
+        return builder.build();
     }
 
-    private class WorkWeChatRobotRequestInterceptor implements RequestInterceptor {
-
-        @Override
-        public void apply(RequestTemplate template) {
-            template.query("key", notifyProperties.getRobotKey());
-        }
-    }
 }
