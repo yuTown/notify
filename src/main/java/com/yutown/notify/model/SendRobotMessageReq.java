@@ -1,4 +1,4 @@
-package com.ruigushop.notify.model;
+package com.yutown.notify.model;
 
 import lombok.Data;
 import lombok.Getter;

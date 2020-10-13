@@ -1,4 +1,4 @@
-package com.ruigushop.notify.config;
+package com.yutown.notify.config;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;

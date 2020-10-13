@@ -1,4 +1,4 @@
-package com.ruigushop.notify.config;
+package com.yutown.notify.config;
 
 import lombok.Data;
 import lombok.Getter;

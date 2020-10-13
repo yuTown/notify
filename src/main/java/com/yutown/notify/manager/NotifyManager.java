@@ -1,12 +1,11 @@
-package com.ruigushop.notify.manager;
+package com.yutown.notify.manager;
 
-import com.ruigu.rbox.cloud.kanai.model.ResponseCode;
-import com.ruigu.rbox.cloud.kanai.util.JsonUtil;
-import com.ruigushop.notify.config.NotifyProperties;
-import com.ruigushop.notify.model.SendRobotMessageReq;
+import com.yutown.notify.config.NotifyProperties;
+import com.yutown.notify.model.SendRobotMessageReq;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.commons.beanutils.BeanMap;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.client.RestTemplate;
@@ -65,16 +64,16 @@ public class NotifyManager {
             String url = SEND_MESSAGE_URL + notifyProperties.getRobotKey();
 
             SendRobotMessageReq sendRobotMessageReq = SendRobotMessageReq.getTextMessageNoticeResearch(message);
-            sendRobotMessageReq.getText().setMentioned_mobile_list(emptyListIfNull(notifyProperties.getUser().getMobile()));
-            sendRobotMessageReq.getText().setMentioned_list(emptyListIfNull(notifyProperties.getUser().getUserId()));
+            sendRobotMessageReq.getText().setMentioned_mobile_list(emptyStringListIfNull(notifyProperties.getUser().getMobile()));
+            sendRobotMessageReq.getText().setMentioned_list(emptyStringListIfNull(notifyProperties.getUser().getUserId()));
 
             ResponseEntity<Object> responseEntity = restTemplate.postForEntity(url, sendRobotMessageReq, Object.class);
 
-            if (!Objects.equals(responseEntity.getStatusCode().value(), ResponseCode.SUCCESS.getCode())) {
-                log.error("restTemplate send notify fail message{} response{} ", message, JsonUtil.toJsonString(responseEntity));
+            if (!Objects.equals(responseEntity.getStatusCode().value(), HttpStatus.OK.value())) {
+                log.error("restTemplate send notify fail message{} response{} ", message, responseEntity);
             }
 
-            Map<String, Object> map = JsonUtil.objectToMap(responseEntity);
+            Map<String, Object> map = (Map<String, Object>) objectToMap(responseEntity);
 
             // 消息消息发送成功
             if (!"0".equals(map.get("errcode").toString())) {
@@ -87,11 +86,17 @@ public class NotifyManager {
     }
 
 
-    public List<String> emptyListIfNull(List<String> list) {
+    public List<String> emptyStringListIfNull(List<String> list) {
         if (list == null || list.isEmpty()) {
             return Collections.emptyList();
         }
         return list;
     }
 
+    public static Map<?, ?> objectToMap(Object obj) {
+        if (obj == null) {
+            return null;
+        }
+        return new BeanMap(obj);
+    }
 }
