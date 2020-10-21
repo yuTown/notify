@@ -18,6 +18,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <lombok.version>1.18.8</lombok.version>
         <spring-boot.version>2.2.1.RELEASE</spring-boot.version>
+        <jackson-module-parameter-names.version>2.10.0</jackson-module-parameter-names.version>
     </properties>
 
     <dependencies>
@@ -54,6 +55,14 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <version>${spring-boot.version}</version>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.module</groupId>
+            <artifactId>jackson-module-parameter-names</artifactId>
+            <version>${jackson-module-parameter-names.version}</version>
+            <scope>provided</scope>
             <optional>true</optional>
         </dependency>
     </dependencies>

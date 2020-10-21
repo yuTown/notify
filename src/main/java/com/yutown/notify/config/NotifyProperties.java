@@ -20,7 +20,7 @@ public class NotifyProperties {
 
     private NotifyUser user;
     private String robotKey;
-    private boolean enabledSend;
+    private boolean enabledSend = false;
 
     @Data
     public static class NotifyUser {

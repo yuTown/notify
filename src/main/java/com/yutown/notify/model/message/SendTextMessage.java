@@ -1,4 +1,4 @@
-package com.yutown.notify.model;
+package com.yutown.notify.model.message;
 
 import lombok.Data;
 import lombok.Getter;
@@ -10,7 +10,7 @@ import java.util.List;
  * @date 2020/7/1 10:29
  */
 @Getter
-public class SendRobotMessageReq {
+public class SendTextMessage {
 
     private String msgtype;
 
@@ -21,13 +21,13 @@ public class SendRobotMessageReq {
      * @param content
      * @return
      */
-    public static SendRobotMessageReq getTextMessageNoticeResearch(String content) {
-        SendRobotMessageReq sendRobotMessageReq = new SendRobotMessageReq();
-        sendRobotMessageReq.msgtype = "text";
+    public static SendTextMessage getTextMessageNoticeResearch(String content) {
+        SendTextMessage sendTextMessage = new SendTextMessage();
+        sendTextMessage.msgtype = "text";
         SendRobotMessageDTO sendRobotMessageDTO = new SendRobotMessageDTO();
         sendRobotMessageDTO.setContent(content);
-        sendRobotMessageReq.text = sendRobotMessageDTO;
-        return sendRobotMessageReq;
+        sendTextMessage.text = sendRobotMessageDTO;
+        return sendTextMessage;
     }
 
     @Data
