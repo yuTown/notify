@@ -2,6 +2,7 @@ package com.yutown.notify.manager;
 
 import com.yutown.notify.config.NotifyProperties;
 import com.yutown.notify.model.enums.NotifyTypeEnum;
+import com.yutown.notify.util.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -10,11 +11,9 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.yutown.notify.util.Utils.objectToMap;
 
 /**
  * 群机器人 发消息
@@ -66,12 +65,12 @@ public abstract class BaseNotify {
             String url = SEND_MESSAGE_URL + notifyProperties.getRobotKey();
 
             ResponseEntity<Object> responseEntity = restTemplate.postForEntity(url, buildMessage(message), Object.class);
-
+            log.info(JsonUtil.toJsonString(responseEntity));
             if (!Objects.equals(responseEntity.getStatusCode().value(), HttpStatus.OK.value())) {
                 log.error("restTemplate send notify fail message{} response{} ", message, responseEntity);
             }
 
-            Map<String, Object> map = objectToMap(responseEntity.getBody());
+            Map<String, Object> map = JsonUtil.objectToMap(responseEntity.getBody());
 
             // 消息消息发送成功
             if (!"0".equals(map.get("errcode").toString())) {

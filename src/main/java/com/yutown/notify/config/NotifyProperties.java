@@ -18,6 +18,12 @@ import java.util.List;
 @ConfigurationProperties(prefix = "work-we-chat")
 public class NotifyProperties {
 
+    // TODO: 2021/4/15 渠道配置
+    /**
+     * 1. 企业微信机器人
+     * 2. 企业微信应用(收,发消息)
+     */
+
     private NotifyUser user;
     private String robotKey;
     private boolean enabledSend = false;
@@ -26,10 +32,13 @@ public class NotifyProperties {
     public static class NotifyUser {
 
         /**
-         * 企业微信用户id
+         * 企业微信用户id, @all发送全员
          */
         private List<String> userId;
 
+        /**
+         * 企业微信用户手机号
+         */
         private List<String> mobile;
 
     }

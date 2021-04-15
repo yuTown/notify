@@ -1,6 +1,7 @@
 package com.yutown.notify.exception;
 
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author dong jing xi
@@ -9,6 +10,7 @@ import lombok.Getter;
 public class NotifyException extends RuntimeException {
 
     @Getter
+    @Setter
     private String message;
 
     public NotifyException(String message) {
